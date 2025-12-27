@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Patient Dashboard</title>
+  <link rel="stylesheet" href="/static/patient_dashboard.css">
+</head>
+<body>
+  <div class="dashboard-card">
+
+    <!-- Header -->
+    <header class="dashboard-header">
+      <h1 class="welcome-text">Welcome {{ patient.user.name }}</h1>
+      <div class="header-links">
+        <form action="{{ url_for('editpatient') }}" method="GET" class="logout-form">
+          <input type="hidden" name="patient_id" value="{{patient.patient_id}}">
+          <input type="hidden" name="url" value="patient_dashboard">
+          <button type="submit" class="logout-link">Edit Profile</button>
+        </form>
+        <span>|</span>
+        <form action="{{ url_for('patient_history') }}" method="POST" class="logout-form">
+          <input type="hidden" name="patient_id" value="{{patient.patient_id}}">
+          <button type="submit" name='ptdh' class="logout-link">History</button>
+        </form>
+        <span>|</span>
+        <form action="{{ url_for('logout') }}" method="GET" class="logout-form">
+          <button type="submit" class="logout-link">Logout</button>
+        </form>
+      </div>
+    </header>
+
+    <!-- Departments Section -->
+    <section class="card-section">
+      <h2>Departments</h2>
+      <div class="departments-list">
+        {% for dept in departments %}
+        <div class="dept-item">
+          <span class="dept-name">{{ dept.name }}</span>
+          <form action="{{ url_for('department_details') }}" method="GET">
+              <input type="hidden" name="dept_id" value="{{ dept.dept_id }}">
+              <input type="hidden" name="patient_id" value="{{ patient.patient_id }}">
+              <button type="submit" class="btn-outline">View Details</button>
+        </form>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Appointments Section -->
+    <section class="card-section">
+      <h2>Upcoming Appointments</h2>
+      {% if appointments %}
+      <table class="appointments-table">
+        <thead>
+          <tr>
+            <th>Sr No.</th>
+            <th>Doctor Name</th>
+            <th>Dept</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in appointments %}
+          <tr>
+            <td>{{ appt.sr_no }}.</td>
+            <td>{{ appt.doctor.user.name  if appt.doctor else '-'}}</td>
+            <td>{{ appt.doctor.department.name if appt.doctor else '-'}}</td>
+            <td>{{ appt.date }}</td>
+            <td>{{ appt.time }}</td>
+            <td>
+              <form action="{{ url_for('cancel_appointment') }}" method="POST" onsubmit="return confirmCancel();">
+                <input type="hidden" name="sr_no" value="{{ appt.sr_no }}">
+                <input type="hidden" name="patient_id" value="{{ patient.patient_id }}">
+                <button type="submit" name='pcancel' class="btn-danger">Cancel</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="no-appointments">You have no upcoming appointments.</p>
+      {% endif %}
+    </section>
+  </div>
+
+  <script>
+    function confirmCancel() {
+      return confirm('Are you sure you want to cancel this appointment?');
+    }
+  </script>
+</body>
+</html>

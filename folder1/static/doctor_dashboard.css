@@ -1,0 +1,178 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9fafb;
+  margin: 0;
+  padding: 0;
+}
+#flash {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 15px;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    opacity: 0.95;
+    transition: opacity 0.5s ease;
+  }
+
+.dashboard-header {
+  background: linear-gradient(90deg, #004d99, #0073e6);
+  padding: 15px 20px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.logout-btn {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.logout-btn:hover {
+  background-color: #0052a3;
+}
+
+.dashboard-body {
+  padding: 20px;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.update-btn,
+.complete-btn,
+.cancel-btn,
+.view-btn,
+.availability-btn {
+  background-color: white;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.update-btn {
+  border: 1px solid #3088f2;
+  color: #3088f2;
+}
+
+.update-btn:hover {
+  background-color: #3088f2;
+  color: white;
+}
+
+.complete-btn {
+  border: 1px solid #22c55e;
+  color: #22c55e;
+}
+
+.complete-btn:hover {
+  background-color: #22c55e;
+  color: white;
+}
+
+.cancel-btn {
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  margin-left: 5px;
+}
+
+.cancel-btn:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+.view-btn {
+  border: 1px solid #3088f2;
+  color: #3088f2;
+}
+
+.view-btn:hover {
+  background-color: #3088f2;
+  color: white;
+}
+
+.availability-btn-container {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.availability-btn {
+  border: 1px solid #22c55e;
+  color: #22c55e;
+  background-color: white;
+  border-radius: 5px;
+  padding: 8px 15px;
+}
+
+.availability-btn:hover {
+  background-color: #22c55e;
+  color: white;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e4e8f3;
+  border-radius: 10px;
+  overflow: hidden; /* Ensures corners are clipped */
+}
+
+table thead th {
+  background-color: #f1f6ff; /* or your chosen color */
+  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #e0e6f0;
+}
+
+#assigned-patient{
+background-color: #f8faff;
+border: 1px solid #e4e8f3;
+}

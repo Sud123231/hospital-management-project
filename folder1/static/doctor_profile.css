@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background: #f4f6fb;
+    display: flex;
+    justify-content: center;
+    padding-top: 60px;
+}
+
+.profile-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-card {
+    background: #ffffff;
+    width: 900px;               /* Bigger card */
+    padding: 40px;
+    border-radius: 22px;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    box-shadow: 0px 6px 20px rgba(0,0,0,0.08);
+}
+
+.profile-img {
+    width: 90px;                /* Smaller profile image */
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.doc-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 6px;
+}
+
+.doc-qual {
+    font-size: 16px;
+    color: #4b5563;
+    margin-bottom: 4px;
+}
+
+.doc-role {
+    font-size: 17px;
+    color: #2563eb;
+    margin-bottom: 18px;
+}
+
+.doc-exp {
+    font-size: 15px;
+    margin-bottom: 14px;
+    color: #374151;
+}
+
+.sub {
+    color: #6b7280;
+}
+
+.doc-desc {
+    font-size: 15px;
+    color: #4b5563;
+    margin-bottom: 26px;
+    line-height: 1.6;
+}
+
+.btn-row {
+    display: flex;
+    gap: 14px;
+}
+
+.primary-btn,
+.secondary-btn {
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-size: 15px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.primary-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #1f4ecc;
+}
+
+.secondary-btn {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.secondary-btn:hover {
+    background: #d4d6da;
+}

@@ -1,0 +1,86 @@
+/* ---------- Create Department Page ---------- */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  border: 2px solid #a8d5ba; /* soft green to match button tone */
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 15px;
+  outline: none;
+  background-color: #f9fdfb;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}
+
+/* Back and Create Buttons */
+.btn.small.gray {
+  background-color: #ccc;
+  color: #222;
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.btn.small.gray:hover {
+  background-color: #b1b1b1;
+}
+
+/* Submit Button (Create Department) */
+.btn.red.create {
+  background-color: #28a745; /* success green for 'add' actions */
+  color: white;
+  font-size: 16px;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.3s ease;
+}
+
+.btn.red.create:hover {
+  background-color: #218838; /* darker green on hover */
+}
+
+/* Card layout adjustments for forms */
+.card h1 {
+  margin-bottom: 0;
+}
+
+.card .top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: #ddd;
+  margin: 1rem 0;
+}

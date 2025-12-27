@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile</title>
+    <link rel="stylesheet" href="/static/doctor_profile.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <div class="profile-card">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
+             class="profile-img" alt="Doctor">
+
+        <div class="profile-info">
+            <h2 class="doc-name">Dr. {{doctor.user.name}}</h2>
+            <p class="doc-qual">{{doctor.qualification}}</p>
+            <p class="doc-role">{{doctor.role}}</p>
+
+            <p class="doc-exp">
+                <strong>{{doctor.oexperience}} years</strong> experience overall 
+                <span class="sub">({{doctor.sexperience}} years as specialist)</span>
+            </p>
+
+            <p class="doc-desc">
+                Dr. {{doctor.name}} is a {{doctor.role}} based in India and has 
+                {{doctor.oexperience}} years of professional experience in {{doctor.department.name}}.
+            </p>
+
+            <div class="btn-row">
+                <a href="{{url_for('doctor_availability',doct_id=doctor.doct_id,patient_id=patient.patient_id)}}" class="primary-btn">Check Availability</a>
+                <a href="{{url_for('department_details',dept_id=dept_id,patient_id=patient.patient_id)}}" class="secondary-btn">Go Back</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

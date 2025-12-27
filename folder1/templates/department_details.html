@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Department of {{department_name}}</title>
+  <link rel="stylesheet" href="/static/department_details.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h2>Department of {{department_name}}</h2>
+      <div class="nav-links">
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    </header>
+
+    <section class="overview">
+      <h3>Overview</h3>
+      <p>{{department.description}}</p>
+    </section>
+
+    <section class="doctors-list">
+  <h3>Doctors' list</h3>
+  {% if department.doctors %}
+    {% for deptobj in department.doctors %}
+    <div class="doctor-card">
+      <span class="doctor-name">Dr. {{ deptobj.user.name }}</span>
+
+      <div class="btn-group">
+        <form method="GET" action="{{ url_for('doctor_availability') }}">
+          <input type="hidden" name="doct_id" value="{{ deptobj.doct_id }}">
+          <input type="hidden" name="patient_id" value="{{ patient.patient_id }}">
+          <button type="submit" class="btn primary">check availability</button>
+        </form>
+
+        <form method="GET" action="{{ url_for('doctor_profile') }}">
+          <input type="hidden" name="doct_id" value="{{ deptobj.doct_id }}">
+          <input type="hidden" name="patient_id" value="{{ patient.patient_id }}">
+          <input type="hidden" name="dept_id" value="{{ department.dept_id }}">
+          <button type="submit" class="btn secondary">view details</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p>This department doesn't have any doctor yet.</p>
+  {% endif %}
+</section>
+  </div>
+</body>
+</html>

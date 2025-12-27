@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Patient</title>
+  <link rel="stylesheet" href="/static/editpatient.css">
+</head>
+<body>
+  <div class="container">
+    <h2 class="form-title">Update Patient Details</h2>
+
+    <form action="{{ url_for('editpatient') }}" method="POST" class="form-card">
+      <!-- Hidden ID field -->
+      <input type="hidden" name="patient_id" value="{{ patient.patient_id }}">
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          placeholder="Enter full name"
+          value="{{ patient.user.name }}" 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          placeholder="Enter new password"
+          value="{{ patient.user.password }}" 
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn-submit">Update</button>
+    </form>
+  </div>
+</body>
+</html>

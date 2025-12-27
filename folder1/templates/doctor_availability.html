@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor's Availability</title>
+  <link rel="stylesheet" href="/static/doctor_availability.css">
+</head>
+<body>
+  {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+  {% endfor %}
+  <div class="availability-container">
+    <h2>Doctor's Availability</h2>
+
+    <form action="{{url_for('appointment')}}" method="POST">
+      <input type="hidden" name="doct_id" value="{{doctor_id}}">
+      <input type="hidden" name="patient_id" value="{{patient_id}}">
+      <div class="availability-table">
+      {% for a in availabilities %}
+        {% if a.morning_booked=='False' or a.evening_booked=='False' %} 
+          <div class="availability-row">  
+          <div class="date-slot">{{ a.date }}</div>
+
+          <label class="time-slot morning">
+            {% if a.morning_booked=='False' and a.morning_slot!='Not available' %}
+              <input type="radio" name="slot" value="{{ a.date }}|{{ a.morning_slot }}">
+              {{ a.morning_slot}}
+            {% else %} 
+              Not available
+            {% endif %}  
+          </label>
+
+          <label class="time-slot evening">
+            {% if a.evening_booked=='False' and a.evening_slot!='Not available' %}
+              <input type="radio" name="slot" value="{{ a.date }}|{{ a.evening_slot }}">
+              {{ a.evening_slot}}
+            {% else %}
+              Not available
+            {% endif %}
+          </label>
+        </div>
+        {% endif %}
+      {% endfor %}
+      </div>
+      <button type="submit" name='Book' class="book-btn">Book</button>
+    </form>
+  </div>
+  <script>
+  // Highlight selected slot
+  const slots = document.querySelectorAll('.time-slot input');
+  slots.forEach(slot => {
+    slot.addEventListener('change', () => {
+      document.querySelectorAll('.time-slot').forEach(label => label.classList.remove('selected'));
+      slot.parentElement.classList.add('selected');
+    });
+  });
+  setTimeout(() => {
+        document.querySelectorAll('.flash').forEach(flash => {
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 500);
+        });
+    }, 2000);
+  </script>
+</body>
+</html>

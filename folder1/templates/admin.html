@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/static/admin.css"/>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="top-row">
+        <h1>Welcome Admin</h1>
+        <form method="POST" action="{{url_for('admin')}}" class="search-form">
+          <input name="search" placeholder="doctor, patient, department..." />
+          <button class="search-btn" type="submit">search</button>
+        </form>
+      </div>
+
+      <hr class="divider" />
+      <a href="{{url_for('createdoctor')}}" class="create btn green">Create</a>
+      
+      <!-- Registered Doctors -->
+      <h2>Registered Doctors</h2>
+      <div class="list">
+        {% for d in doctors %}
+        <div class="list-item">
+          <div class="item-left">
+            <i class="fa-regular fa-user icon"></i>
+            <span class="name">{{ d.user.name }}</span>
+          </div>
+          <div class="item-actions">
+            <form action="{{ url_for('editdoctor')}}" method="GET">
+              <input type="hidden" name="doct_id" value="{{ d.doct_id }}">
+              <button class="btn small yellow">edit</button>
+            </form>
+            <form method="POST" action="{{ url_for('deletedoctor')}}" style="display:inline;">
+              <input type="hidden" name="doct_id" value="{{ d.doct_id }}">
+              <button class="btn small red" type="submit">delete</button>
+            </form>
+          </div>
+        </div>
+        {% else %}
+          <p class="muted">No doctors registered.</p>
+        {% endfor %}
+      </div>
+
+      <!-- Registered Patients -->
+      <h2>Registered Patients</h2>
+      <div class="list">
+        {% for p in patients %}
+        <div class="list-item">
+          <div class="item-left">
+            <i class="fa-regular fa-user icon"></i>
+            <span class="name">{{ p.user.name }}</span>
+          </div>
+          <div class="item-actions">
+            <form action="{{ url_for('editpatient') }}" method="GET">
+              <input type="hidden" name="patient_id" value="{{ p.patient_id }}">
+              <button class="btn small yellow">edit</button>
+            </form>
+            <form action="{{ url_for('deletepatient') }}" method="POST">
+              <input type="hidden" name="patient_id" value="{{ p.patient_id }}">
+              <button class="btn small red">delete</button>
+            </form>
+          </div>
+        </div>
+        {% else %}
+        <p class="muted">No patients registered.</p>
+        {% endfor %}
+      </div>
+
+      <!-- Manage Departments -->
+      <a class="create btn green dept" href="{{url_for('create_department')}}">Add Department</a>
+      <h2>Manage Departments</h2>
+      <div class="list">
+        {% for dept in departments %}
+        <div class="list-item">
+          <div class="item-left">
+            <i class="fa-solid fa-building icon"></i>
+            <span class="name">{{ dept.name }}</span>
+          </div>
+          <div class="item-actions">
+            <form action="{{ url_for('editdepartment') }}" method="GET">
+              <input type="hidden" name="dept_id" value="{{ dept.dept_id }}">
+              <button class="btn small yellow">edit</button>
+            </form>
+            <form action="{{ url_for('deletedepartment') }}" method="POST">
+              <input type="hidden" name="dept_id" value="{{dept.dept_id }}">
+              <button class="btn small red">delete</button>
+            </form>
+          </div>
+        </div>
+        {% else %}
+        <p class="muted">No departments added.</p>
+        {% endfor %}
+      </div>
+
+      <!-- Upcoming Appointments -->
+      <h2>Upcoming Appointments</h2>
+      <div class="table-wrap">
+        <table class="appt-table">
+          <thead>
+            <tr>
+              <th>Sr No.</th>
+              <th>Patient Name</th>
+              <th>Doctor Name</th>
+              <th>Department</th>
+              <th>Patient History</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in appointments %}
+            <tr>
+              <td>{{ a.sr_no }}</td>
+              <td>{{ a.patient.user.name if a.patient else "-" }}</td>
+              <td>{{ a.doctor.user.name if a.doctor else "-" }}</td>
+              <td>{{ a.doctor.department.name if a.doctor else '-'}}</td>
+              <td>
+              <form action="{{ url_for('patient_history') }}" method="POST">
+               <input type="hidden" name="patient_id" value="{{ a.patient_id }}">
+               <input type="hidden" name="doct_id" value="{{ a.doctor_id }}">
+               <button type="submit" class='btn small blue' name='adview' class="view-btn">view</button>
+              </form>
+              </td>
+            </tr>
+            {% else %}
+                <tr><td colspan="5" class="muted">No upcoming appointments.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

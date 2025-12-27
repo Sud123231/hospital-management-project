@@ -1,0 +1,114 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f7f9fc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+.flash {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);   /* center exactly */
+    background-color: #ffdddd;
+    color: #a60000;
+    border: 1px solid #ff8a8a;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.availability-container {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px 40px;
+  width: 520px;
+}
+
+h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.availability-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.availability-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.date-slot {
+  background-color: #e8edf5;
+  border: 2px solid #aab4c8;
+  padding: 10px 15px;
+  border-radius: 6px;
+  width: 110px;
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+}
+
+.time-slot {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+  border: 2px solid transparent;
+}
+
+/* Morning slot color (green border) */
+.morning {
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+/* Evening slot color (red border) */
+.evening {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+/* Remove radio buttons visually */
+.time-slot input {
+  display: none;
+}
+
+/* Highlight selected slot (blue) */
+.time-slot.selected {
+  background-color: #e1edff;
+  border-color: #3b82f6;
+  color: #1e40af;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+}
+
+.book-btn {
+  margin-top: 20px;
+  background-color: #00c851;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.book-btn:hover {
+  background-color: #00a944;
+}

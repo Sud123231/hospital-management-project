@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Dashboard</title>
+  <link rel="stylesheet" href="/static/doctor_dashboard.css">
+</head>
+<body>
+  {% for message in get_flashed_messages() %}
+    <div id="flash">{{ message }}</div>
+  {% endfor %}
+
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h2>Welcome Dr. {{ doctor.user.name }}</h2>
+    <form action="{{ url_for('logout') }}" method="GET">
+      <button type="submit" class="logout-btn">Logout</button>
+    </form>
+  </div>
+
+  <!-- Body -->
+  <div class="dashboard-body">
+    <div class="card">
+
+      <!-- Upcoming Appointments -->
+      <h3>Upcoming Appointments</h3>
+      {% if appointments %}
+      <table>
+        <thead>
+          <tr>
+            <th>Sr No.</th>
+            <th>Patient Name</th>
+            <th>Patient History</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in appointments %} <!--appt must include data values of patient_name and department at the time of rendering-->
+          <tr>
+            <td>{{ appt.sr_no }}.</td>
+            <td>{{ appt.patient.user.name }}</td>
+            <td>
+              <form action="{{ url_for('update_history')}}" method="POST">
+                <input type="hidden" name="patient_id" value="{{ appt.patient_id }}">  
+                <input type="hidden" name="dept_id" value="{{ appt.doctor.department.dept_id }}">  
+                <input type="hidden" name="doct_id" value="{{ appt.doctor_id }}">  
+                <button type="submit" class="update-btn">update</button>
+              </form>
+            </td>
+            <td>
+              <form action="{{ url_for('markcomplete') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="sr_no" value="{{ appt.sr_no }}">  
+                <button type="submit" class="complete-btn">mark as complete</button>
+              </form>
+              <form action="{{ url_for('cancel_appointment') }}" method="POST" style="display:inline;" onsubmit="return confirmCancel();">
+                 <input type="hidden" name="sr_no" value="{{ appt.sr_no }}">
+                <button type="submit" name='dcancel' class="cancel-btn">cancel</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No upcoming appointments.</p>
+      {% endif %}
+
+      <!-- Assigned Patients through appointments data -->
+      <h3>Assigned Patients</h3>
+      {% if uappointments %}
+      <table>
+        {% for a in uappointments %}
+        <tr id="assigned-patient">
+          <td>{{ a.patient.user.name }}</td>
+          <td class="align-right">
+            <form action="{{ url_for('patient_history') }}" method="POST">
+               <input type="hidden" name="patient_id" value="{{ a.patient_id }}">
+               <input type="hidden" name="doct_id" value="{{ a.doctor_id }}">
+              <button type="submit" name='view' class="view-btn">view</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <p>No patients assigned.</p>
+      {% endif %}
+
+      <!-- Provide Availability -->
+      <div class="availability-btn-container">
+        <form action="{{ url_for('provide_availability') }}" method="GET">
+          <input type="hidden" name="doct_id" value="{{ doctor.doct_id }}">
+          <button type="submit" class="availability-btn">Provide Availability</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+  <script>
+    function confirmCancel() {
+      return confirm('Are you sure you want to cancel this appointment?');
+    }
+    setTimeout(() => {
+    const flash = document.getElementById('flash');
+    if (flash) flash.style.opacity = '0';
+    setTimeout(() => flash?.remove(), 500);
+  }, 2000);
+  </script>
+</body>
+</html>

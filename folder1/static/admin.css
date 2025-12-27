@@ -1,0 +1,259 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f4f8ff;
+  color: #333;
+}
+
+/* Page Layout */
+.page {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 1100px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  padding: 30px 40px;
+}
+
+/* Top Row */
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.top-row h1 {
+  color: #002b80;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Search Bar */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-form input {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #c5d4ff;
+  outline: none;
+  width: 250px;
+  transition: 0.3s;
+}
+
+.search-form input:focus {
+  border-color: #4a7dff;
+  box-shadow: 0 0 0 3px rgba(74, 125, 255, 0.15);
+}
+
+.search-btn {
+  background: #4a7dff;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.search-btn:hover {
+  background: #3565e8;
+}
+
+/* Section Titles */
+h2 {
+  margin-top: 25px;
+  font-size: 20px;
+  color: #002b80;
+  border-left: 4px solid #4a7dff;
+  padding-left: 8px;
+}
+
+/*  Lists  */
+.list {
+  margin-top: 12px;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f9fbff;
+  border: 1px solid #e2e8ff;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: 0.25s;
+}
+
+.list-item:hover {
+  background: #eef3ff;
+  transform: scale(1.01);
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  color: #4a7dff;
+  font-size: 18px;
+}
+
+.name {
+  font-weight: 500;
+  color: #333;
+}
+
+.item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Buttons */
+/* General Button Styling */
+.btn {
+  background-color: white;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  font-weight: 500;
+  text-decoration:none;
+}
+
+.btn.small {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
+/* Button Variants  */
+
+/* Edit Button (Yellow) */
+.btn.yellow {
+  border: 1px solid #f59e0b;
+  color: #f59e0b;
+}
+.btn.yellow:hover {
+  background-color: #f59e0b;
+  color: white;
+}
+
+/* Delete Button (Red) */
+.btn.red {
+  border: 1px solid #ef4444;
+  color: #ef4444;
+}
+.btn.red:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* Blacklist Button (Gray) */
+.btn.gray {
+  border: 1px solid #6b7280;
+  color: #6b7280;
+}
+.btn.gray:hover {
+  background-color: #6b7280;
+  color: white;
+}
+
+/* View Button (Blue) */
+.btn.blue {
+  border: 1px solid #3088f2;
+  color: #3088f2;
+}
+.btn.blue:hover {
+  background-color: #3088f2;
+  color: white;
+}
+
+/* Smooth hover transition for all */
+.btn:hover {
+  transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out;
+}
+
+/* Table */
+.table-wrap {
+  margin-top: 15px;
+  overflow-x: auto;
+}
+
+.appt-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.appt-table th,
+.appt-table td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid #e2e8ff;
+}
+
+.appt-table th {
+  background: #f0f4ff;
+  color: #002b80;
+  font-weight: 600;
+}
+
+.appt-table tbody tr:hover {
+  background: #f7f9ff;
+}
+
+/*  Misc  */
+.muted {
+  color: #888;
+  font-style: italic;
+  text-align: center;
+}
+
+.divider {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background: #e2e8ff;
+}
+.create{
+  /* css for create button  */
+  float:right;
+}
+.green{
+  background-color: white;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #22c55e;
+  color: #22c55e;
+  padding: 8px 15px;
+}
+.green:hover{
+  background-color: #22c55e;
+  color:white;
+}
+.dept{
+  margin-top:10px;
+}
+

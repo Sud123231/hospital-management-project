@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Provide Availability</title>
+  <link rel="stylesheet" href="/static/provide_availability.css">
+</head>
+<body>
+  <h2>Provide Availability</h2>
+
+  <form action="{{url_for('provide_availability')}}" method="POST" id="availabilityForm">
+    <input type="hidden" name="doctor_id" value="{{ doctor_id }}">
+    <div id="availabilityContainer">
+      <div class="availability-row">
+        <input type="date" name="date[]" required>
+        <select name="morning_time[]" required>
+          <option value="">-- Select Morning Slot --</option>
+          <option>08:00 - 12:00 PM</option>
+          <option>Not available</option>
+        </select>
+
+        <select name="evening_time[]" required>
+          <option>-- Select Evening Slot --</option>
+          <option>04:00 - 09:00 PM</option>
+          <option>Not available</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="button" id="addRow">Add</button>
+    <button type="submit">Save</button>
+  </form>
+
+  <script>
+    document.getElementById("addRow").addEventListener("click", function () {
+      const container = document.getElementById("availabilityContainer");
+      const newRow = document.createElement("div");
+      newRow.classList.add("availability-row");
+      newRow.innerHTML = `
+        <input type="date" name="date[]" required>
+        <select name="morning_time[]" required>
+          <option value="">-- Select Morning Slot --</option>
+          <option>08:00 - 12:00 PM</option>
+          <option>Not available</option>
+        </select>
+
+        <select name="evening_time[]" required>
+          <option>-- Select Evening Slot --</option>
+          <option>04:00 - 09:00 PM</option>
+          <option>Not available</option>
+        </select>
+      `;
+      container.appendChild(newRow);
+    });
+  </script>
+</body>
+</html>

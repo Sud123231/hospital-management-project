@@ -1,0 +1,105 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+*{
+    margin:0px;
+    padding:0px;
+    Font-Family: "Inter", sans-serif;
+    box-sizing:border-box;
+}
+body {
+    background-color: #E9F3FF;
+    height: 100vh;   /* Full viewport height */
+    display:flex;
+    justify-content:center;
+    align-items: center;
+}
+.flash {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);   /* center exactly */
+    background-color: #ffdddd;
+    color: #a60000;
+    border: 1px solid #ff8a8a;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+#container{
+    width:300px;
+    height:360px;
+    background-color: white;
+    border-radius:10px;
+    transition:transform 0.3s ease-in-out; /* smooth effect */
+}
+#loginhead{
+    text-align: center;
+    margin-bottom:30px;
+    margin-top:30px;
+    font-weight: 700; /* Bold */
+    font-size: 2rem;
+    color: #252eff; 
+}
+input{
+   display:block;
+   width:250px;
+   background: #f8fafc;
+   border: 1.5px solid #dce3eb;
+   padding-left: 5px;
+   height:30px;
+   border-radius:20px;
+   margin:15px;
+   outline:none;
+   font-size: 0.95rem;
+}
+button{
+    display:block;
+    width:130px;
+    height:30px;
+    color:white;
+    font-weight:500;
+    border-radius:20px;
+    border-color: blue;
+    background-color:blue;
+    font-size:13px;
+    transition: background-color 0.3s ease-in-out;
+    border:none;
+}
+#formcontainer{
+    display:flex;
+    justify-content:center;
+}
+input::placeholder {
+  font-size: 13px;
+  font-weight: 600;       
+}
+#container:hover {
+    transform: scale(1.01); /* slight zoom */
+}
+#buttondiv{
+    width:300px;
+    height:30px;
+    margin-top:20px;
+    margin-bottom:15px;
+    display:flex;
+    justify-content:center;
+}
+a{
+    width:250px;
+    height:30px;
+    font-weight:500;
+    border-radius:20px;
+    font-size:15px;
+    color:#0000ff;
+    
+}
+p{
+    font-weight:500;
+    font-size:15px;
+text-align:center;
+}
+button:hover {
+  background-color:rgb(5, 5, 163);
+}

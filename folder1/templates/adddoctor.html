@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add a new Doctor</title>
+  <link rel="stylesheet" href="/static/adddoctor.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+</head>
+<body>
+  {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+  {% endfor %}
+    <div class="form-card">
+      <h2>{{header}}</h2>
+      <form action="{{url_for(url)}}" method="POST">
+        <div class="input-group">
+          <i class="fa-solid fa-user icon"></i>
+          <input type="text" placeholder="Fullname" name="fullname" value="{{doctor.user.name if doctor else ''}}"required>
+        </div>
+        <div class="input-group">
+          <i class="fa-solid fa-envelope icon"></i>
+          <input type="email" name="email" placeholder="Email" value="{{ doctor.email if doctor else '' }}" required>
+        </div>
+        <div class="input-group">
+          <i class="fa-solid fa-lock icon"></i>
+          <input type="password" placeholder="Password" name="password" value="{{doctor.password if doctor else ''}}"required>
+        </div>
+        
+        <div class="input-group">
+          <i class="fa-solid fa-graduation-cap icon"></i>
+          <input type="text" placeholder="Qualification" name="qualification" value="{{doctor.qualification if doctor else ''}}" required>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-user-tie icon"></i>
+          <input type="text" placeholder="specialization" name="role" value="{{doctor.role if doctor else ''}}" required>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-regular fa-clock icon"></i>
+          <input type="number" placeholder="Experience as specialist (years)" name="sexperience" value="{{doctor.sexperience if doctor else ''}}" required>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-square-plus icon"></i>
+          <input type="text" placeholder="Department id" name="department_id" value="{{doctor.dept_id if doctor else ''}}" required>
+        </div>
+
+        <div class="input-group">
+          <i class="fa-regular fa-clock icon"></i>
+          <input type="number" placeholder="Overall Experience (years)" name="oexperience" value="{{doctor.oexperience if doctor else ''}}" required>
+        </div>
+          <input type="hidden" name="doct_id" value="{{ doct_id }}">  
+        <button type="submit" class="btn">{{btn_name}}</button>
+      </form>
+    </div>
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.flash').forEach(flash => {
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 500);
+        });
+    }, 2000);
+</script>
+</body>
+</html>

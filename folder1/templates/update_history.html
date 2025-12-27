@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Update Patient History</title>
+  <link rel="stylesheet" href="/static/update_history.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Update Patient History</h2>
+
+    <div class="patient-info">
+      <p><strong>Patient Name:</strong> {{ patient.user.name }}</p>
+      <p><strong>Department:</strong> {{ dept.name }}</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('patient_history') }}">
+      <div class="form-row">
+        <input type="hidden" name="patient_id" value="{{patient.patient_id}}">
+        <input type="hidden" name="patient_name" value="{{patient.name}}">
+        <input type="hidden" name="doct_id" value="{{doct_id}}">
+        <div class="form-group">
+          <label for="visit_type">Visit Type</label>
+          <input type="text" id="visit_type" name="visit_type" required>
+        </div>
+
+        <div class="form-group">
+          <label for="tests_done">Test Done</label>
+          <input type="text" id="tests_done" name="tests_done">
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label for="diagnosis">Diagnosis</label>
+        <textarea id="diagnosis" name="diagnosis"></textarea>
+      </div>
+
+      <div class="form-group full">
+        <label for="prescription">Prescription</label>
+        <textarea id="prescription" name="prescription"></textarea>
+      </div>
+
+      <div class="medicines-section">
+        <h4>Medicines</h4>
+        <div id="medicines-list">
+              <div class="medicine-item">
+                <input type="text" name="medicines" placeholder="Medicines name">
+              </div>
+        </div>
+      </div>
+      <div class="save-btn-container">
+        <button type="submit" name='save' class="save-btn">Save</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

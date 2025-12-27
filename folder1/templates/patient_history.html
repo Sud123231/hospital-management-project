@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient History</title>
+  <link rel="stylesheet" href="/static/patient_history.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Patient History</h2>
+      <a class="back-btn btn" href="{{url}}">Back</a>
+    </div>
+
+    <div class="info">
+      <p><strong>Patient Name:</strong> {{ patient_name }}</p>
+      <p><strong>Doctors' Name:</strong> {{ doctor_name }}</p>
+      <p><strong>Department:</strong> {{ patient_department }}</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Visit No.</th>
+          <th>Visit Type</th>
+          <th>Tests Done</th>
+          <th>Diagnosis</th>
+          <th>Prescription</th>
+          <th>Medicines</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for visit in history %}
+        <tr>
+          <td>{{ visit.visit_no }}</td>
+          <td>{{ visit.visit_type }}</td>
+          <td>{{ visit.tests_done }}</td>
+          <td>{{ visit.diagnosis }}</td>
+          <td>{{ visit.prescription }}</td>
+          <td>{{ visit.medicines }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

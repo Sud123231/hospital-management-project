@@ -1,0 +1,41 @@
+<!--Register page-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register page</title>
+    <link rel="stylesheet" href="/static/Register.css">
+</head>
+<body>
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+    <div id="container">
+        <div id="plus-icon">
+        <img src="/static/images/OIP-removebg-preview.png" alt="icon" style="width:50px;">
+        </div>
+        <h2 id="Registerhead">Register</h2>
+        <!--form is submitting to the Register url-->
+        <form action="/" method="POST">
+            <input type="text" name="full_name" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            <!--Submit button-->
+            <button type="submit">Register</button>
+            <!--Redirect to login page if user has already an account-->
+            <p>Have account?<a href="/login"> Login</a></p>
+        </form>
+    </div>
+    <script>
+    setTimeout(() => {
+        document.querySelectorAll('.flash').forEach(flash => {
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 500);
+        });
+    }, 2000);
+</script>
+
+</body>
+</html>
