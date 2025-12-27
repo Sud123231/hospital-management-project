@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# hospital-management-project
-This project makes it easy for a hospital to manage their operations seamlessly and efficiently.
-=======
 # Hospital Management System
 
 A lightweight Hospital Management System built with **Flask**, designed for educational and demo purposes. It supports role‑based access for **Admin**, **Doctor**, and **Patient**, and provides core features like appointment booking, doctor availability tracking, and patient history management.
@@ -125,5 +121,3 @@ The application uses **SQLite**, with tables for users, doctors, patients, depar
 ## Contributing
 
 Suggestions and improvements are welcome. This project is intended for learning Flask structure, routing, and database modeling.
-
->>>>>>> e5db12b (initial commit)
