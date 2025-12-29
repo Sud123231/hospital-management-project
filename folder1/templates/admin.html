@@ -14,14 +14,14 @@
     <div class="card">
       <div class="top-row">
         <h1>Welcome Admin</h1>
-        <form method="POST" action="{{url_for('admin')}}" class="search-form">
+        <form method="POST" action="{{url_for('admin_search')}}" class="search-form">
           <input name="search" placeholder="doctor, patient, department..." />
           <button class="search-btn" type="submit">search</button>
         </form>
       </div>
 
       <hr class="divider" />
-      <a href="{{url_for('createdoctor')}}" class="create btn green">Create</a>
+      <a href="{{url_for('create_doctor_page')}}" class="create btn green">Create</a>
       
       <!-- Registered Doctors -->
       <h2>Registered Doctors</h2>

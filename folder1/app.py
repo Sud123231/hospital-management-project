@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,url_for,session,flash
+from flask import Flask,render_template,request,redirect,url_for,session,flash,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from models import PatientHistory,Appointment,Doctor,Patient,Department,DoctorAvailability,User
 from extensions import db
@@ -40,7 +40,7 @@ with app.app_context():
         db.session.add(admin)
         db.session.commit()   
 
-#route for Register page   https://github.com/Sud123231/hospital-management-project
+#route for Register page   
 @app.route("/",methods=["GET", "POST"])
 def Register():
     if request.method == "POST":
@@ -113,27 +113,26 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route("/admin",methods=["GET","POST"])
+@app.route("/admin",methods=["GET"])
 def admin():
-    if request.method=='GET' and 'admin_id' in session:
+    if 'admin_id' in session:
         doctors=Doctor.query.all()
         patients=Patient.query.all()
         appointments=Appointment.query.filter_by(status='upcoming').all()
         departments=Department.query.all()
         return render_template("admin.html",doctors=doctors,patients=patients,appointments=appointments,departments=departments) 
-    
-    if request.method == "POST" and 'search' in request.form:
-        entity_name = request.form['search']
-        doctors = Doctor.query.join(User).filter(User.name.ilike(f"%{entity_name}%")).all()
-        patients=Patient.query.join(User).filter(User.name.ilike(f"%{entity_name}%")).all()
-        appointments=Appointment.query.filter_by(status='upcoming').all()
-        departments=Department.query.filter(Department.name.ilike(f"%{entity_name}%")).all()
-        return render_template("admin.html",
-                               doctors=doctors,
-                               patients=patients,
-                               appointments=appointments,
-                               departments=departments)
     return render_template('404.html'),404
+
+
+@app.route("/admin/search",methods=["POST"])
+def admin_search():
+  if 'admin_id' in session: 
+    entity_name = request.form['search']
+    doctors = Doctor.query.join(User).filter(User.name.ilike(f"%{entity_name}%")).all()
+    patients=Patient.query.join(User).filter(User.name.ilike(f"%{entity_name}%")).all()
+    appointments=Appointment.query.filter_by(status='upcoming').all()
+    departments=Department.query.filter(Department.name.ilike(f"%{entity_name}%")).all()
+    return render_template("admin.html",doctors=doctors,patients=patients,appointments=appointments,departments=departments)
 
 
 @app.route("/doctor_dashboard",methods=["GET",'POST'])
@@ -174,15 +173,28 @@ def doctor_profile(): #it receives request from the department_details page
         return render_template('404.html'),404        
 
 
-@app.route("/admin/add_doctor",methods=["POST","GET"])
+@app.route("/admin/doctor", methods=["GET"])
+def create_doctor_page():
+    if 'admin_id' not in session:
+        return redirect(url_for("login"))
+
+    return render_template(
+        "adddoctor.html",
+        btn_name="Create",
+        url="createdoctor",
+        header="Add a new Doctor"
+    )
+
+
+@app.route("/api/doctors",methods=["POST"])
 def createdoctor():
     button_name='Create'
-    if request.method=='POST':
+    if 'admin_id' in session:
         email=request.form['email']
         user=User.query.filter_by(email=email).first()
         if user:
             flash("Email already registered!", "error")
-            return redirect(url_for("createdoctor"))
+            return redirect(url_for("create_doctor_page"))
         fullname=request.form['fullname']
         department_id=request.form['department_id']
         oexperience=request.form['oexperience']
@@ -207,9 +219,7 @@ def createdoctor():
             db.session.rollback()   
             return "Create department first for the entered department id", 400
         return redirect(url_for("admin"))
-    if request.method=='GET' and "admin_id" in session: #rendering 'adddoctor.html' as per admin request
-        return render_template("adddoctor.html",btn_name=button_name,url='createdoctor',header='Add a new Doctor')
-    return render_template('404.html'),404
+    return jsonify({"error": "Unauthorized"}), 401
 
 
 @app.route('/admin/editdoctor/',methods=["GET","POST"])
