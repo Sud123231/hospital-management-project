@@ -11,6 +11,8 @@
 }
 body {
     background-color:#E9F3FF;
+    background-image: url(/static/images/Hospital_staff.png);
+    background-size:cover;
     height: 100vh;   /* Full viewport height */
     display:flex;
     justify-content:center;
