@@ -170,7 +170,7 @@ def doctor_profile(): #it receives request from the department_details page
         doctor=Doctor.query.filter_by(doct_id=doct_id).first()
         return render_template('doctor_profile.html',patient=patient,doctor=doctor,dept_id=dept_id)
     else:
-        return render_template('404.html'),404        
+        abort(404)       
 
 
 @app.route("/admin/doctor", methods=["GET"])
@@ -322,7 +322,7 @@ def provide_availability():
     if request.method=='GET':
         doct_id=request.args.get('doct_id')
         return render_template('provide_availability.html',doctor_id=doct_id)
-    return render_template('404.html'),404
+    abort(404)
 
 @app.route('/doctor_dashboard/markcomplete',methods=['POST']) #endpoint for changing appointment status
 def markcomplete():
@@ -342,7 +342,7 @@ def doctor_availability():
         availabilities=DoctorAvailability.query.filter_by(doctor_id=doct_id).all()
         return render_template("doctor_availability.html",patient_id=patient_id,doctor_id=doct_id,availabilities=availabilities)
     except:
-        return render_template('404.html'),404    
+        abort(404)  
 
 
 @app.route("/patient_history",methods=["GET","POST"])
@@ -398,7 +398,7 @@ def patient_history():
             doctor=histories[0].doctor         
         return render_template("patient_history.html", history=histories,patient_name=patient.user.name,doctor_name=doctor.user.name if doctor else None,patient_department=doctor.department.name if doctor else None,url=url)        
     else:
-        return render_template('404.html'),404
+        abort(404)
 
 
 @app.route('/patient_dashboard', methods=["GET", "POST"])
@@ -416,7 +416,7 @@ def patient_dashboard():
                                appointments=appointments)
 
     else:
-        return render_template('404.html'),404
+        abort(404)
 
 
 @app.route('/patients/edit', methods=['GET', 'POST'])
@@ -495,7 +495,7 @@ def department_details():
         if department:
            return render_template("department_details.html",department_name=department.name,     department=department,patient=patient)
     else: #throw error for an unauthorized access
-        return render_template('404.html'),404
+        abort(403)
         
 
 @app.route('/admin/editdepartment', methods=['GET', 'POST'])
