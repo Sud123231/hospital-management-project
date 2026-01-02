@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,url_for,session,flash,jsonify
+from flask import Flask,render_template,request,redirect,url_for,session,flash,jsonify,abort
 from flask_sqlalchemy import SQLAlchemy
 from models import PatientHistory,Appointment,Doctor,Patient,Department,DoctorAvailability,User
 from extensions import db
@@ -121,7 +121,7 @@ def admin():
         appointments=Appointment.query.filter_by(status='upcoming').all()
         departments=Department.query.all()
         return render_template("admin.html",doctors=doctors,patients=patients,appointments=appointments,departments=departments) 
-    return render_template('404.html'),404
+    abort(403)
 
 
 @app.route("/admin/search",methods=["POST"])
@@ -158,7 +158,7 @@ def doctor_dashboard():
         uappointments=uappointments
         )
     else:
-        return render_template('404.html'),404
+        abort(403)
     
 @app.route('/patient-dashboard/department-details/doctor-profile',methods=['GET']) 
 def doctor_profile(): #it receives request from the department_details page
