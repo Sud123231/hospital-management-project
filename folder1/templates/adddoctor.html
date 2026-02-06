@@ -16,7 +16,7 @@
   {% endfor %}
     <div class="form-card">
       <h2>{{header}}</h2>
-      <form action="{{url_for(url)}}" method="POST">
+      <form action="{{url_for('create_doctor_page')}}" method="POST">
         <div class="input-group">
           <i class="fa-solid fa-user icon"></i>
           <input type="text" placeholder="Fullname" name="fullname" value="{{doctor.user.name if doctor else ''}}"required>

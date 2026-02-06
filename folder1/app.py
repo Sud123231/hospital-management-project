@@ -112,84 +112,43 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-
-@app.route("/admin",methods=["GET"])
+@app.route("/admin",methods=["GET","POST"])
 def admin():
-    if 'admin_id' in session:
+    #rendering admin dashboard as per admin's request
+    if 'admin_id' in session and request.method=='GET':
         doctors=Doctor.query.all()
         patients=Patient.query.all()
         appointments=Appointment.query.filter_by(status='upcoming').all()
         departments=Department.query.all()
         return render_template("admin.html",doctors=doctors,patients=patients,appointments=appointments,departments=departments) 
+     
+    #rendering admin dashboard as per admin's search request
+    if 'admin_id' in session and request.method=='POST': 
+        entity_name = request.form['search']
+        doctors = Doctor.query.join(User).filter(User.name.ilike(f"%{entity_name}%")).all()
+        patients=Patient.query.join(User).filter(User.name.ilike(f"%{entity_name}%")).all()
+        appointments=Appointment.query.filter_by(status='upcoming').all()
+        departments=Department.query.filter(Department.name.ilike(f"%{entity_name}%")).all()
+        return render_template("admin.html",doctors=doctors,patients=patients,appointments=appointments,departments=departments)
     abort(403)
 
-
-@app.route("/admin/search",methods=["POST"])
-def admin_search():
-  if 'admin_id' in session: 
-    entity_name = request.form['search']
-    doctors = Doctor.query.join(User).filter(User.name.ilike(f"%{entity_name}%")).all()
-    patients=Patient.query.join(User).filter(User.name.ilike(f"%{entity_name}%")).all()
-    appointments=Appointment.query.filter_by(status='upcoming').all()
-    departments=Department.query.filter(Department.name.ilike(f"%{entity_name}%")).all()
-    return render_template("admin.html",doctors=doctors,patients=patients,appointments=appointments,departments=departments)
-
-
-@app.route("/doctor_dashboard",methods=["GET",'POST'])
-def doctor_dashboard():
-    if request.method=="GET" and "doct_id" in session:
-        doct_id=session["doct_id"]
-        # Example: Fetch doctor details (here assuming User model has role 'doctor')
-        doctor = Doctor.query.filter_by(doct_id=doct_id).first()
-
-        # Example: Fetch patients or appointments from PatientHistory table
-        appointments = Appointment.query.filter_by(doctor_id=doct_id,status='upcoming').all() 
-        uappointments=[]
-        upatient_ids=[]
-        for appt in appointments:
-            if appt.patient_id not in upatient_ids:
-                upatient_ids.append(appt.patient_id)
-                uappointments.append(appt)    
-
-        return render_template(
-        "doctor_dashboard.html",
-        doctor=doctor,
-        appointments=appointments,
-        uappointments=uappointments
-        )
-    else:
-        abort(403)
-    
-@app.route('/patient-dashboard/department-details/doctor-profile',methods=['GET']) 
-def doctor_profile(): #it receives request from the department_details page
-    if 'patient_id' in session:
-        patient_id=request.args.get('patient_id')
-        doct_id=request.args.get('doct_id') 
-        dept_id=request.args.get('dept_id')
-        patient=Patient.query.filter_by(patient_id=patient_id).first()
-        doctor=Doctor.query.filter_by(doct_id=doct_id).first()
-        return render_template('doctor_profile.html',patient=patient,doctor=doctor,dept_id=dept_id)
-    else:
-        abort(404)       
-
-
-@app.route("/admin/doctor", methods=["GET"])
+@app.route("/admin/doctor", methods=["GET","POST"])
 def create_doctor_page():
     if 'admin_id' not in session:
-        return redirect(url_for("login"))
-
-    return render_template(
+        return jsonify({"error": "Unauthorized"}), 401
+    
+    #rendering create doctor page as per admin's request
+    if request.method=="GET":
+        return render_template(
         "adddoctor.html",
         btn_name="Create",
         url="createdoctor",
         header="Add a new Doctor"
-    )
+        )
 
-
-@app.route("/api/doctors",methods=["POST"])
-def createdoctor():
-    button_name='Create'
-    if 'admin_id' in session:
+    #adding new doctor to database
+    if request.method == "POST": 
+        button_name='Create'     
         email=request.form['email']
         user=User.query.filter_by(email=email).first()
         if user:
@@ -214,13 +173,48 @@ def createdoctor():
         # commit it to the database
         try:
             db.session.commit()
-
         except Exception as e:
             db.session.rollback()   
             return "Create department first for the entered department id", 400
-        return redirect(url_for("admin"))
-    return jsonify({"error": "Unauthorized"}), 401
+        return redirect(url_for("admin"))       
+ 
 
+@app.route("/doctor-dashboard",methods=["GET"])
+def doctor_dashboard():
+    if request.method=="GET" and "doct_id" in session:
+        doct_id=session["doct_id"]
+        # Fetching doctor details 
+        doctor = Doctor.query.filter_by(doct_id=doct_id).first()
+        # Fetching appointments from Appointment table
+        appointments = Appointment.query.filter_by(doctor_id=doct_id,status='upcoming').all() 
+        uappointments=[]
+        upatient_ids=[]
+        for appt in appointments:
+            if appt.patient_id not in upatient_ids:
+                upatient_ids.append(appt.patient_id)
+                uappointments.append(appt)    
+
+        return render_template(
+        "doctor_dashboard.html",
+        doctor=doctor,
+        appointments=appointments,
+        uappointments=uappointments
+        )
+    else:
+        abort(403)
+
+#it should be around patient-dashboard    
+@app.route('/patient-dashboard/department-details/doctor-profile',methods=['GET']) 
+def doctor_profile(): #it receives request from the department_details page
+    if 'patient_id' in session:
+        patient_id=request.args.get('patient_id')
+        doct_id=request.args.get('doct_id') 
+        dept_id=request.args.get('dept_id')
+        patient=Patient.query.filter_by(patient_id=patient_id).first()
+        doctor=Doctor.query.filter_by(doct_id=doct_id).first()
+        return render_template('doctor_profile.html',patient=patient,doctor=doctor,dept_id=dept_id)
+    else:
+        abort(404)       
 
 @app.route('/admin/editdoctor/',methods=["GET","POST"])
 def editdoctor():
