@@ -131,6 +131,31 @@ def admin():
         departments=Department.query.filter(Department.name.ilike(f"%{entity_name}%")).all()
         return render_template("admin.html",doctors=doctors,patients=patients,appointments=appointments,departments=departments)
     abort(403)
+@app.route('/admin/delete-patient',methods=['POST'])
+def deletepatient():
+    if request.method=='POST':
+       patient_id=request.form['patient_id']
+       user=User.query.get_or_404(patient_id)
+       patient_history=PatientHistory.query.filter_by(patient_id=patient_id).all()
+       for appt in user.patient.appointments:
+            availability = DoctorAvailability.query.filter_by(doctor_id=appt.doctor_id,date=appt.date).first()
+
+            if availability:
+                if appt.time == availability.morning_slot:
+                    availability.morning_booked = "False"
+                elif appt.time == availability.evening_slot:
+                    availability.evening_booked = "False"
+
+       for appt in list(user.patient.appointments):
+            if appt.status == "upcoming":
+                db.session.delete(appt)
+            else:
+                appt.patient_status=f'{user.name}, Deleted'  
+       for his in patient_history:
+           his.patient_status=f'{user.name,user.email}, Deleted'           
+       db.session.delete(user)
+       db.session.commit()
+       return redirect(url_for('admin'))
 
 @app.route("/admin/doctor", methods=["GET","POST"])
 def create_doctor_page():
@@ -201,20 +226,7 @@ def doctor_dashboard():
         uappointments=uappointments
         )
     else:
-        abort(403)
-
-#it should be around patient-dashboard    
-@app.route('/patient-dashboard/department-details/doctor-profile',methods=['GET']) 
-def doctor_profile(): #it receives request from the department_details page
-    if 'patient_id' in session:
-        patient_id=request.args.get('patient_id')
-        doct_id=request.args.get('doct_id') 
-        dept_id=request.args.get('dept_id')
-        patient=Patient.query.filter_by(patient_id=patient_id).first()
-        doctor=Doctor.query.filter_by(doct_id=doct_id).first()
-        return render_template('doctor_profile.html',patient=patient,doctor=doctor,dept_id=dept_id)
-    else:
-        abort(404)       
+        abort(403)       
 
 @app.route('/admin/editdoctor/',methods=["GET","POST"])
 def editdoctor():
@@ -280,6 +292,60 @@ def deletedoctor():
 
         return redirect(url_for('admin'))
     
+
+@app.route('/admin/create_department',methods=["POST","GET"])
+def create_department():
+    if request.method=='POST':
+        name=request.form['name']
+        description=request.form['description']
+        existing = Department.query.filter_by(name=name).first()
+        if existing:
+            error='This department name already exists'
+            return render_template("create_department.html",error=error,url='create_department',button='create')
+        else:
+            try:
+              department=Department(name=name,description=description)
+              db.session.add(department)
+              db.session.commit()
+            except Exception as e:
+              db.session.rollback()
+              return f'Error:{str(e)}'
+            return redirect(url_for('admin'))   
+
+    return render_template("create_department.html",header='Add a New Department',url='create_department',button='create')
+
+
+@app.route('/admin/editdepartment', methods=['GET', 'POST'])
+def editdepartment():
+    if request.method == 'GET':
+        dept_id = request.args.get('dept_id')
+        department = Department.query.get_or_404(dept_id)
+        return render_template('create_department.html', department=department,header='Update Department Details',url='editdepartment',button='Update')
+
+    # for POST request
+    dept_id = request.form['dept_id']
+    department = Department.query.get_or_404(dept_id)
+    department.name = request.form['name']
+    department.description = request.form['description']
+    db.session.commit()
+    return redirect(url_for('admin')) 
+
+@app.route('/admin/deletedepartment', methods=['POST'])  
+def deletedepartment():
+    if request.method=='POST':
+       dept_id=request.form['dept_id']
+       department=Department.query.get_or_404(dept_id)
+       doctors = Doctor.query.filter_by(dept_id=dept_id).all()
+
+       for doc in doctors:
+           Appointment.query.filter(Appointment.doctor_id == doc.doct_id,Appointment.status == "upcoming").delete()
+           user = User.query.get(doc.doct_id)
+           if user:
+               db.session.delete(user)
+       #deleting doctor record
+       db.session.delete(department)
+       db.session.commit()
+       return redirect(url_for('admin'))
 
 @app.route('/doctor_dashboard/updatehistory',methods=['POST'])
 def update_history():
@@ -412,6 +478,18 @@ def patient_dashboard():
     else:
         abort(404)
 
+   
+@app.route('/patient-dashboard/department-details/doctor-profile',methods=['GET']) 
+def doctor_profile(): #it receives request from the department_details page
+    if 'patient_id' in session:
+        patient_id=request.args.get('patient_id')
+        doct_id=request.args.get('doct_id') 
+        dept_id=request.args.get('dept_id')
+        patient=Patient.query.filter_by(patient_id=patient_id).first()
+        doctor=Doctor.query.filter_by(doct_id=doct_id).first()
+        return render_template('doctor_profile.html',patient=patient,doctor=doctor,dept_id=dept_id)
+    else:
+        abort(404)
 
 @app.route('/patients/edit', methods=['GET', 'POST'])
 def editpatient():
@@ -430,54 +508,7 @@ def editpatient():
 
        db.session.commit()
        return redirect(url_for(url))  
-
-@app.route('/admin/deletepatient',methods=['POST'])
-def deletepatient():
-    if request.method=='POST':
-       patient_id=request.form['patient_id']
-       user=User.query.get_or_404(patient_id)
-       patient_history=PatientHistory.query.filter_by(patient_id=patient_id).all()
-       for appt in user.patient.appointments:
-            availability = DoctorAvailability.query.filter_by(doctor_id=appt.doctor_id,date=appt.date).first()
-
-            if availability:
-                if appt.time == availability.morning_slot:
-                    availability.morning_booked = "False"
-                elif appt.time == availability.evening_slot:
-                    availability.evening_booked = "False"
-
-       for appt in list(user.patient.appointments):
-            if appt.status == "upcoming":
-                db.session.delete(appt)
-            else:
-                appt.patient_status=f'{user.name}, Deleted'  
-       for his in patient_history:
-           his.patient_status=f'{user.name,user.email}, Deleted'           
-       db.session.delete(user)
-       db.session.commit()
-       return redirect(url_for('admin'))
-
-
-@app.route('/admin/create_department',methods=["POST","GET"])
-def create_department():
-    if request.method=='POST':
-        name=request.form['name']
-        description=request.form['description']
-        existing = Department.query.filter_by(name=name).first()
-        if existing:
-            error='This department name already exists'
-            return render_template("create_department.html",error=error,url='create_department',button='create')
-        else:
-            try:
-              department=Department(name=name,description=description)
-              db.session.add(department)
-              db.session.commit()
-            except Exception as e:
-              db.session.rollback()
-              return f'Error:{str(e)}'
-            return redirect(url_for('admin'))   
-
-    return render_template("create_department.html",header='Add a New Department',url='create_department',button='create')    
+    
 
 @app.route("/patient-dashboard/department_details",methods=["GET"])
 def department_details():
@@ -489,43 +520,10 @@ def department_details():
         if department:
            return render_template("department_details.html",department_name=department.name,     department=department,patient=patient)
     else: #throw error for an unauthorized access
-        abort(403)
-        
-
-@app.route('/admin/editdepartment', methods=['GET', 'POST'])
-def editdepartment():
-    if request.method == 'GET':
-        dept_id = request.args.get('dept_id')
-        department = Department.query.get_or_404(dept_id)
-        return render_template('create_department.html', department=department,header='Update Department Details',url='editdepartment',button='Update')
-
-    # for POST request
-    dept_id = request.form['dept_id']
-    department = Department.query.get_or_404(dept_id)
-    department.name = request.form['name']
-    department.description = request.form['description']
-    db.session.commit()
-    return redirect(url_for('admin')) 
-
-@app.route('/admin/deletedepartment', methods=['POST'])  
-def deletedepartment():
-    if request.method=='POST':
-       dept_id=request.form['dept_id']
-       department=Department.query.get_or_404(dept_id)
-       doctors = Doctor.query.filter_by(dept_id=dept_id).all()
-
-       for doc in doctors:
-           Appointment.query.filter(Appointment.doctor_id == doc.doct_id,Appointment.status == "upcoming").delete()
-           user = User.query.get(doc.doct_id)
-           if user:
-               db.session.delete(user)
-       #deleting doctor record
-       db.session.delete(department)
-       db.session.commit()
-       return redirect(url_for('admin'))  
+        abort(403)  
     
 
-@app.route('/departmentdetails/appointment',methods=['GET','POST'])
+@app.route('/department-details/appointment',methods=['GET','POST'])
 def appointment():
     if request.method=='POST':
      try:
