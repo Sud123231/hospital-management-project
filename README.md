@@ -33,7 +33,6 @@ A lightweight Hospital Management System built with **Flask**, designed for educ
 
 ```
 MAD1_PROJECT/
-├── .git/
 ├── folder1/
 │   ├── static/
 │   ├── templates/
@@ -41,8 +40,7 @@ MAD1_PROJECT/
 │   ├── app.py
 │   ├── extensions.py
 │   └── models.py
-├── instance/
-│   └── userdetails.db
+├── instance
 └── .gitignore
 ```
 
